@@ -31,7 +31,9 @@ static const char ledPin = 13;
 static const char samples = 10;
 
 static const byte DEGREES_CHAR = 0;
+static const byte CELSIUS_CHAR = 1;
 static const byte degrees_glyph[] = { 0x00, 0x07, 0x05, 0x07, 0x00 };
+static const byte celsius_glyph[] = { 0x3e, 0x7f, 0x41, 0x41, 0x22 };
 
 static PCD8544 lcd;
 
@@ -39,6 +41,7 @@ static PCD8544 lcd;
 void setup() {
   lcd.begin();
   lcd.createChar(DEGREES_CHAR, degrees_glyph);
+  lcd.createChar(CELSIUS_CHAR, celsius_glyph);
   
   pinMode(ledPin, OUTPUT);
 }
@@ -63,7 +66,7 @@ void loop() {
   lcd.clearLine(2);
   lcd.write('+');
   lcd.print(temp);
-  lcd.write(' '); lcd.write(DEGREES_CHAR); lcd.write('C');
+  lcd.write(' '); lcd.write(DEGREES_CHAR); lcd.write(CELSIUS_CHAR);
 
   digitalWrite(ledPin, LOW);  
   delay(500);
