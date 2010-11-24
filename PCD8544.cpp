@@ -25,7 +25,7 @@
 
 #include "PCD8544.h"
 
-#include "WProgram.h"
+#include <WProgram.h>
 
 
 #define PCD8544_CMD  LOW

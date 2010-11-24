@@ -27,7 +27,7 @@
 #define PCD8544_H
 
 
-#include "WProgram.h"
+#include <WProgram.h>
 
 
 // The pins used by this library...
@@ -77,7 +77,7 @@ class PCD8544: public Print {
     private:
         unsigned char width;
         unsigned char height;
-        const unsigned char *glyphs[CUSTOM_GLYPHS - 1];
+        const unsigned char *glyphs[CUSTOM_GLYPHS];
 
         void send(unsigned char type, unsigned char data);
 };
