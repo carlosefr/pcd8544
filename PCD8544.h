@@ -67,14 +67,14 @@ class PCD8544: public Print {
         // Assign a custom glyph (5x8) to ASCII 0-31...
         void createChar(unsigned char position, const unsigned char *glyph);
 
-        // Write a single glyph at the current cursor position (7-bit)...
-        void write(unsigned char data);
+        // Write a single character at the current cursor position (7-bit)...
+        void write(unsigned char c);
 
     private:
         unsigned char width;
         unsigned char height;
 
-        // Positions up to ASCII space character (0x20)...
+        // Glyphs below the ASCII space character (0x20)...
         const unsigned char *custom[0x20];
 
         void send(unsigned char type, unsigned char data);
