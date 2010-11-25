@@ -38,10 +38,6 @@
 #define PCD8544_SCE   7  /* enable      (display pin 5) */
 
 
-// The number of possible custom glyphs...
-#define CUSTOM_GLYPHS 32
-
-
 class PCD8544: public Print {
     public:
         // Display initialization...
@@ -77,7 +73,9 @@ class PCD8544: public Print {
     private:
         unsigned char width;
         unsigned char height;
-        const unsigned char *glyphs[CUSTOM_GLYPHS];
+
+        // Positions up to ASCII space character (0x20)...
+        const unsigned char *custom[0x20];
 
         void send(unsigned char type, unsigned char data);
 };

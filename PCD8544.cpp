@@ -26,6 +26,7 @@
 #include "PCD8544.h"
 
 #include <WProgram.h>
+#include <avr/pgmspace.h>
 
 
 #define PCD8544_CMD  LOW
@@ -33,7 +34,7 @@
 
 
 // The 7-bit ASCII character set...
-static const unsigned char ascii[][5] = {
+static const unsigned char ascii[][5] PROGMEM = {
   { 0x00, 0x00, 0x00, 0x00, 0x00 },  // 20 space
   { 0x00, 0x00, 0x5f, 0x00, 0x00 },  // 21 !
   { 0x00, 0x07, 0x00, 0x07, 0x00 },  // 22 "
@@ -138,10 +139,7 @@ void PCD8544::begin(unsigned char width, unsigned char height)
     this->width = width;
     this->height = height;
 
-    // By default, all custom glyphs are an ascii character...
-    for (unsigned char i = 0; i < CUSTOM_GLYPHS; i++) {
-        this->glyphs[i] = ascii['*' - 0x20];
-    }
+    memset(this->custom, 0, sizeof(this->custom));
 
     // All pins are outputs (these displays cannot be read)...
     pinMode(PCD8544_SCLK, OUTPUT);
@@ -236,13 +234,29 @@ void PCD8544::setCursor(unsigned char column, unsigned char line)
 
 void PCD8544::createChar(unsigned char position, const unsigned char *glyph)
 {
-    this->glyphs[position % CUSTOM_GLYPHS] = glyph;
+    this->custom[position % 0x20] = glyph;
 }
 
 
 void PCD8544::write(unsigned char data)
 {
-    const unsigned char *glyph = (data < CUSTOM_GLYPHS) ? this->glyphs[data] : ascii[(data & 0x7f) - 0x20];
+    unsigned char pgm_buffer[5]; 
+    const unsigned char *glyph;
+
+    if (data >= 0x20) {
+        // Regular ASCII characters are stored in flash to save RAM...
+        memcpy_P(pgm_buffer, &ascii[(data & 0x7f) - 0x20], sizeof(pgm_buffer));
+        glyph = pgm_buffer;
+    } else {
+        // Custom glyphs occupy the positions below the ASCII space character...
+        if (this->custom[data]) {
+            glyph = this->custom[data];
+        } else {
+            // Default to an arbitrary ASCII character...
+            memcpy_P(pgm_buffer, &ascii['*' - 0x20], sizeof(pgm_buffer));
+            glyph = pgm_buffer;
+        }
+    }
 
     for (unsigned char i = 0; i < 5; i++) {
         this->send(PCD8544_DATA, glyph[i]);
