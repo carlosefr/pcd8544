@@ -131,7 +131,7 @@ const PROGMEM unsigned char charset[][5] = {
 };
 
 
-#endif CHARSET_H
+#endif  // CHARSET_H
 
 
 /* vim: set expandtab ts=4 sw=4: */

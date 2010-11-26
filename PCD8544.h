@@ -52,8 +52,8 @@ class PCD8544: public Print {
         void setPower(bool on);
 
         // For compatibility with the LiquidCrystal library...
-        void display() { this->setPower(true); };
-        void noDisplay() { this->setPower(false); };
+        void display();
+        void noDisplay();
 
         // Activate inverse mode...
         void setInverse(bool inverse);
@@ -64,24 +64,24 @@ class PCD8544: public Print {
         // Place the cursor at position (column, line)...
         void setCursor(unsigned char column, unsigned char line);
 
-        // Assign a custom glyph (5x8) to ASCII 0-31...
-        void createChar(unsigned char position, const unsigned char *glyph);
+        // Assign a user-defined glyph (5x8) to an ASCII character (0-31)...
+        void createChar(unsigned char chr, const unsigned char *glyph);
 
-        // Write a single character at the current cursor position (7-bit)...
-        void write(unsigned char c);
+        // Write an ASCII character at the current cursor position (7-bit)...
+        virtual void write(unsigned char chr);
 
     private:
         unsigned char width;
         unsigned char height;
 
-        // Glyphs below the ASCII space character (0x20)...
-        const unsigned char *custom[0x20];
+        // User-defined glyphs (below the ASCII space character)...
+        const unsigned char *custom[' '];
 
         void send(unsigned char type, unsigned char data);
 };
 
 
-#endif PCD8544_H
+#endif  // PCD8544_H
 
 
 /* vim: set expandtab ts=4 sw=4: */

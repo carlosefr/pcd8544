@@ -114,6 +114,18 @@ void PCD8544::setPower(bool on)
 }
 
 
+inline void PCD8544::display()
+{
+    this->setPower(true);
+}
+
+
+inline void PCD8544::noDisplay()
+{
+    this->setPower(false);
+}
+
+
 void PCD8544::setInverse(bool inverse)
 {
     this->send(PCD8544_CMD, inverse ? 0x0d : 0x0c);
@@ -133,28 +145,38 @@ void PCD8544::setCursor(unsigned char column, unsigned char line)
 }
 
 
-void PCD8544::createChar(unsigned char position, const unsigned char *glyph)
+void PCD8544::createChar(unsigned char chr, const unsigned char *glyph)
 {
-    this->custom[position % 0x20] = glyph;
+    // ASCII 0-31 only...
+    if (chr >= ' ') {
+        return;
+    }
+    
+    this->custom[chr] = glyph;
 }
 
 
-void PCD8544::write(unsigned char c)
+void PCD8544::write(unsigned char chr)
 {
-    unsigned char pgm_buffer[5];
-    const unsigned char *glyph;
+    // ASCII 7-bit only...
+    if (chr >= 0x80) {
+        return;
+    }
 
-    if (c >= 0x20) {
+    const unsigned char *glyph;
+    unsigned char pgm_buffer[5];
+
+    if (chr >= ' ') {
         // Regular ASCII characters are kept in flash to save RAM...
-        memcpy_P(pgm_buffer, &charset[(c & 0x7f) - 0x20], sizeof(pgm_buffer));
+        memcpy_P(pgm_buffer, &charset[chr - ' '], sizeof(pgm_buffer));
         glyph = pgm_buffer;
     } else {
         // Custom glyphs, on the other hand, are stored in RAM...
-        if (this->custom[c]) {
-            glyph = this->custom[c];
+        if (this->custom[chr]) {
+            glyph = this->custom[chr];
         } else {
-            // Default to an arbitrary ASCII character if unset...
-            memcpy_P(pgm_buffer, &charset['?' - 0x20], sizeof(pgm_buffer));
+            // Default to a space character if unset...
+            memcpy_P(pgm_buffer, &charset[0], sizeof(pgm_buffer));
             glyph = pgm_buffer;
         }
     }
