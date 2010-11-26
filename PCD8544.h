@@ -40,7 +40,7 @@
 
 class PCD8544: public Print {
     public:
-        // Display initialization...
+        // Display initialization (dimensions in pixels)...
         void begin(unsigned char width=84, unsigned char height=48);
         void stop();
 
@@ -55,7 +55,7 @@ class PCD8544: public Print {
         void display();
         void noDisplay();
 
-        // Activate inverse mode...
+        // Activate white-on-black mode (whole display)...
         void setInverse(bool inverse);
 
         // Place the cursor at the start of the current line...
@@ -81,7 +81,7 @@ class PCD8544: public Print {
 };
 
 
-#endif  // PCD8544_H
+#endif  /* PCD8544_H */
 
 
 /* vim: set expandtab ts=4 sw=4: */
