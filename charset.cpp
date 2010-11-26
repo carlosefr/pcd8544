@@ -23,10 +23,6 @@
  */
 
 
-#ifndef CHARSET_H
-#define CHARSET_H
-
-
 #include <avr/pgmspace.h>
 
 
@@ -129,9 +125,6 @@ const PROGMEM unsigned char charset[][5] = {
   { 0x10, 0x08, 0x08, 0x10, 0x08 },  // 7e ~
   { 0x00, 0x00, 0x00, 0x00, 0x00 }   // 7f 
 };
-
-
-#endif  /* CHARSET_H */
 
 
 /* vim: set expandtab ts=4 sw=4: */

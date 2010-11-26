@@ -40,7 +40,7 @@
  */
 
 
-#include "PCD8544.h"
+#include <PCD8544.h>
 
 
 // A custom glyph (a smiley)...

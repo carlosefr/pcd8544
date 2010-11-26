@@ -24,7 +24,6 @@
 
 
 #include "PCD8544.h"
-#include "charset.h"
 
 #include <WProgram.h>
 #include <avr/pgmspace.h>
@@ -32,6 +31,13 @@
 
 #define PCD8544_CMD  LOW
 #define PCD8544_DATA HIGH
+
+
+/*
+ * If this was a ".h", it would get added to sketches when using
+ * the "Sketch -> Import Library..." menu on the Arduino IDE...
+ */
+#include "charset.cpp"
 
 
 void PCD8544::begin(unsigned char width, unsigned char height)

@@ -23,7 +23,7 @@
  */
 
 
-#include "PCD8544.h"
+#include <PCD8544.h>
 
 
 static const char sensorPin = 0;
