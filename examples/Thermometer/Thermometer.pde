@@ -72,7 +72,7 @@ void loop() {
   /* Print the temperature (using the custom "degrees" symbol)... */
   lcd.print(" ");
   lcd.print(temp, 1);
-  lcd.print(" \001C");
+  lcd.print(" \001C ");
 
   digitalWrite(ledPin, LOW);  
   delay(500);
