@@ -46,7 +46,7 @@ class PCD8544: public Print {
 
         // Erase everything on the display...
         void clear();
-        void clearLine(unsigned char line);  // ...or just a single line
+        void clearLine();  // ...or just the current line
         
         // Control the display's power state...
         void setPower(bool on);
@@ -70,13 +70,22 @@ class PCD8544: public Print {
         // Write an ASCII character at the current cursor position (7-bit)...
         virtual void write(unsigned char chr);
 
+        // Draw a bitmap at the current cursor position (clipped by the edges of the display)...
+        void drawBitmap(const unsigned char *data, unsigned char columns, unsigned char lines);
+
     private:
+        // The size of the display, in pixels...
         unsigned char width;
         unsigned char height;
+
+        // Current cursor position...
+        unsigned char column;
+        unsigned char line;
 
         // User-defined glyphs (below the ASCII space character)...
         const unsigned char *custom[' '];
 
+        // Send a command or data to the display...
         void send(unsigned char type, unsigned char data);
 };
 

@@ -45,6 +45,9 @@ void PCD8544::begin(unsigned char width, unsigned char height)
     this->width = width;
     this->height = height;
 
+    this->column = 0;
+    this->line = 0;
+
     // Sanitize the custom glyphs...
     memset(this->custom, 0, sizeof(this->custom));
 
@@ -102,15 +105,15 @@ void PCD8544::clear()
 }
 
 
-void PCD8544::clearLine(unsigned char line)
+void PCD8544::clearLine()
 {
-    this->setCursor(0, line);
+    this->setCursor(0, this->line);
 
     for (unsigned char i = 0; i < this->width; i++) {
         this->send(PCD8544_DATA, 0x00);
     }
 
-    this->setCursor(0, line);
+    this->setCursor(0, this->line);
 }
 
 
@@ -140,14 +143,17 @@ void PCD8544::setInverse(bool inverse)
 
 void PCD8544::home()
 {
-    this->send(PCD8544_CMD, 0x80);
+    this->setCursor(0, this->line);
 }
 
 
 void PCD8544::setCursor(unsigned char column, unsigned char line)
 {
-    this->send(PCD8544_CMD, 0x80 | (column % this->width));
-    this->send(PCD8544_CMD, 0x40 | (line % (this->height/9 + 1))); 
+    this->column = (column % this->width);
+    this->line = (line % (this->height/9 + 1));
+
+    this->send(PCD8544_CMD, 0x80 | this->column);
+    this->send(PCD8544_CMD, 0x40 | this->line); 
 }
 
 
@@ -194,6 +200,36 @@ void PCD8544::write(unsigned char chr)
 
     // One column between characters...
     this->send(PCD8544_DATA, 0x00);
+
+    // Update the cursor position...
+    this->column = (this->column + 6) % this->width;
+
+    if (this->column == 0) {
+        this->line = (this->line + 1) % (this->height/9 + 1);
+    }
+}
+
+
+void PCD8544::drawBitmap(const unsigned char *data, unsigned char columns, unsigned char lines)
+{
+    // The bitmap will be clipped at the right/bottom edge of the display...
+    unsigned char mx = (this->column + columns > this->width) ? (this->width - this->column) : columns;
+    unsigned char my = (this->line + lines > this->height/8) ? (this->height/8 - this->line) : lines;
+
+    for (unsigned char y = 0; y < my; y++) {
+        this->setCursor(this->column, this->line + y);
+
+        for (unsigned char x = 0; x < mx; x++) {
+            this->send(PCD8544_DATA, data[y * columns + x]);
+        }
+    }
+
+    // Update the cursor position...
+    this->column = (this->column + mx) % this->width;
+
+    if (this->column == 0) {
+        this->line = (this->line + 1) % (this->height/9 + 1);
+    }
 }
 
 
