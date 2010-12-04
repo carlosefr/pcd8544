@@ -30,11 +30,11 @@ static const char sensorPin = 0;
 static const char ledPin = 13;
 static const char samples = 10;
 
-/* A custom "degrees" symbol... */
+// A custom "degrees" symbol...
 static const byte DEGREES_CHAR = 1;
 static const byte degrees_glyph[] = { 0x00, 0x07, 0x05, 0x07, 0x00 };
 
-/* A bitmap graphic (10x2) of a thermometer... */
+// A bitmap graphic (10x2) of a thermometer...
 static const byte THERMO_WIDTH = 10;
 static const byte THERMO_HEIGHT = 2;
 static const byte thermometer[] = { 0x00, 0x00, 0x48, 0xfe, 0x01, 0xfe, 0x00, 0x02, 0x05, 0x02,
@@ -46,10 +46,15 @@ static PCD8544 lcd;
 void setup() {
   lcd.begin();
   
-  /* Register the custom symbol... */
+  // Register the custom symbol...
   lcd.createChar(DEGREES_CHAR, degrees_glyph);
   
   pinMode(ledPin, OUTPUT);
+
+  // The internal 1.1V reference provides for better
+  // resolution from the LM35, and is also more stable
+  // when powered from either a battery or USB...
+  analogReference(INTERNAL);
 }
 
 
@@ -58,18 +63,18 @@ void loop() {
 
   float temp = 0;
   
-  /* Read the temperature a few times and average the results... */
+  // Read the temperature a few times and average the results...
   for (int i = 0; i < samples; i++) {
-    temp += (5.0 * analogRead(sensorPin) * 100.0) / 1024.0;
+    temp += (1.1 * analogRead(sensorPin) * 100.0) / 1024.0;
     delay(10);
   }
   temp /= samples;
 
-  /* Draw the thermometer bitmap at position (0,1)... */
+  // Draw the thermometer bitmap at position (0,1)...
   lcd.setCursor(0, 1);
   lcd.drawBitmap(thermometer, THERMO_WIDTH, THERMO_HEIGHT);
   
-  /* Print the temperature (using the custom "degrees" symbol)... */
+  // Print the temperature (using the custom "degrees" symbol)...
   lcd.print(" ");
   lcd.print(temp, 1);
   lcd.print(" \001C ");
