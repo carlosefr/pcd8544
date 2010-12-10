@@ -237,26 +237,27 @@ void PCD8544::drawColumn(unsigned char lines, unsigned char value)
     unsigned char scolumn = this->column;
     unsigned char sline = this->line;
 
-    value = constrain(value, 0, lines*8);
+    // Keep "value" within range...
+    if (value > lines*8) {
+        value = lines*8;
+    }
 
-    // The line where "value" resides...
+    // Find the line where "value" resides...
     unsigned char mark = (lines*8 - 1 - value)/8;
     
-    // Blank the lines above the mark...
+    // Clear the lines above the mark...
     for (unsigned char line = 0; line < mark; line++) {
         this->setCursor(scolumn, sline + line);
         this->send(PCD8544_DATA, 0x00);
     }
 
-    // Draw "value" at the mark...
-    this->setCursor(scolumn, sline + mark);
-
+    // Compute the byte to draw at the "mark" line...
     unsigned char b = 0xff;
-
     for (unsigned char i = 0; i < lines*8 - mark*8 - value; i++) {
         b <<= 1;
     }
 
+    this->setCursor(scolumn, sline + mark);
     this->send(PCD8544_DATA, b);
 
     // Fill the lines below the mark...
