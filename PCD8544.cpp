@@ -82,7 +82,7 @@ void PCD8544::begin(unsigned char width, unsigned char height)
 
     // Place the cursor at the origin...
     this->send(PCD8544_CMD, 0x80);
-    this->send(PCD8544_CMD, 0x40); 
+    this->send(PCD8544_CMD, 0x40);
 }
 
 
@@ -212,24 +212,61 @@ void PCD8544::write(unsigned char chr)
 
 void PCD8544::drawBitmap(const unsigned char *data, unsigned char columns, unsigned char lines)
 {
+    unsigned char scolumn = this->column;
+    unsigned char sline = this->line;
+
     // The bitmap will be clipped at the right/bottom edge of the display...
-    unsigned char mx = (this->column + columns > this->width) ? (this->width - this->column) : columns;
-    unsigned char my = (this->line + lines > this->height/8) ? (this->height/8 - this->line) : lines;
+    unsigned char mx = (scolumn + columns > this->width) ? (this->width - scolumn) : columns;
+    unsigned char my = (sline + lines > this->height/8) ? (this->height/8 - sline) : lines;
 
     for (unsigned char y = 0; y < my; y++) {
-        this->setCursor(this->column, this->line + y);
+        this->setCursor(scolumn, sline + y);
 
         for (unsigned char x = 0; x < mx; x++) {
             this->send(PCD8544_DATA, data[y * columns + x]);
         }
     }
 
-    // Update the cursor position...
-    this->column = (this->column + mx) % this->width;
+    // Leave the cursor in a consistent position...
+    this->setCursor(scolumn + columns, sline);
+}
 
-    if (this->column == 0) {
-        this->line = (this->line + 1) % (this->height/9 + 1);
+
+void PCD8544::drawColumn(unsigned char lines, unsigned char value)
+{
+    unsigned char scolumn = this->column;
+    unsigned char sline = this->line;
+
+    value = constrain(value, 0, lines*8);
+
+    // The line where "value" resides...
+    unsigned char mark = (lines*8 - 1 - value)/8;
+    
+    // Blank the lines above the mark...
+    for (unsigned char line = 0; line < mark; line++) {
+        this->setCursor(scolumn, sline + line);
+        this->send(PCD8544_DATA, 0x00);
     }
+
+    // Draw "value" at the mark...
+    this->setCursor(scolumn, sline + mark);
+
+    unsigned char b = 0xff;
+
+    for (unsigned char i = 0; i < lines*8 - mark*8 - value; i++) {
+        b <<= 1;
+    }
+
+    this->send(PCD8544_DATA, b);
+
+    // Fill the lines below the mark...
+    for (unsigned char line = mark + 1; line < lines; line++) {
+        this->setCursor(scolumn, sline + line);
+        this->send(PCD8544_DATA, 0xff);
+    }
+  
+    // Leave the cursor in a consistent position...
+    this->setCursor(scolumn + 1, sline); 
 }
 
 

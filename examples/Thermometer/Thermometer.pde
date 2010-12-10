@@ -26,9 +26,15 @@
 #include <PCD8544.h>
 
 
-static const char sensorPin = 0;
-static const char ledPin = 13;
-static const char samples = 10;
+static const byte sensorPin = 0;
+static const byte ledPin = 13;
+
+// The dimensions of the LCD (in pixels)...
+static const byte LCD_WIDTH = 84;
+static const byte LCD_HEIGHT = 48;
+
+// The number of lines for the temperature chart...
+static const byte CHART_HEIGHT = 5;
 
 // A custom "degrees" symbol...
 static const byte DEGREES_CHAR = 1;
@@ -44,7 +50,7 @@ static PCD8544 lcd;
 
 
 void setup() {
-  lcd.begin();
+  lcd.begin(LCD_WIDTH, LCD_HEIGHT);
   
   // Register the custom symbol...
   lcd.createChar(DEGREES_CHAR, degrees_glyph);
@@ -59,25 +65,35 @@ void setup() {
 
 
 void loop() {
+  // Start beyond the edge of the screen...
+  static byte xChart = LCD_WIDTH;
+  
   digitalWrite(ledPin, HIGH);
 
-  float temp = 0;
-  
-  // Read the temperature a few times and average the results...
-  for (int i = 0; i < samples; i++) {
-    temp += (1.1 * analogRead(sensorPin) * 100.0) / 1024.0;
-    delay(10);
-  }
-  temp /= samples;
-
-  // Draw the thermometer bitmap at position (0,1)...
-  lcd.setCursor(0, 1);
-  lcd.drawBitmap(thermometer, THERMO_WIDTH, THERMO_HEIGHT);
+  // Read the temperature (in celsius)...
+  float temp = (1.1 * analogRead(sensorPin) * 100.0) / 1024.0;
   
   // Print the temperature (using the custom "degrees" symbol)...
-  lcd.print(" ");
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
   lcd.print(temp, 1);
   lcd.print(" \001C ");
+
+  // Draw the thermometer bitmap at the bottom left corner...
+  lcd.setCursor(0, LCD_HEIGHT/8 - THERMO_HEIGHT);
+  lcd.drawBitmap(thermometer, THERMO_WIDTH, THERMO_HEIGHT);
+
+  // Wrap the chart's current position...
+  if (xChart >= LCD_WIDTH) {
+    xChart = THERMO_WIDTH + 2;
+  }
+
+  // Update the temperature chart...  
+  lcd.setCursor(xChart, 1);
+  lcd.drawColumn(CHART_HEIGHT, map(temp, 0, 45, 0, CHART_HEIGHT*8));  // ...clipped to the 0-45C range.
+  lcd.drawColumn(CHART_HEIGHT, 0);         // ...with a clear marker to see the current chart position.
+  
+  xChart++;
 
   digitalWrite(ledPin, LOW);  
   delay(500);
