@@ -40,7 +40,7 @@
 #include "charset.cpp"
 
 
-void PCD8544::begin(unsigned char width, unsigned char height)
+void PCD8544::begin(unsigned char width, unsigned char height, unsigned char model)
 {
     this->width = width;
     this->height = height;
@@ -70,6 +70,11 @@ void PCD8544::begin(unsigned char width, unsigned char height)
     this->send(PCD8544_CMD, 0x13);  // bias system (1:48)
     this->send(PCD8544_CMD, 0xC2);  // set Vop (3.06 + 66 * 0.06 = 7V)
     this->send(PCD8544_CMD, 0x20);  // extended instruction set control (H=0)
+
+    if (model == CHIP_ST7576) {
+        this->send(PCD8544_CMD, 0x05);  // partial display mode
+    }
+
     this->send(PCD8544_CMD, 0x09);  // all display segments on
 
     // Clear RAM contents...

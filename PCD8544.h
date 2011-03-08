@@ -30,6 +30,11 @@
 #include <WProgram.h>
 
 
+// Chip variants supported...
+#define CHIP_PCD8544 0
+#define CHIP_ST7576  1
+
+
 // The pins used by this library...
 #define PCD8544_SCLK  3  /* clock       (display pin 2) */
 #define PCD8544_SDIN  4  /* data-in     (display pin 3) */
@@ -41,7 +46,7 @@
 class PCD8544: public Print {
     public:
         // Display initialization (dimensions in pixels)...
-        void begin(unsigned char width=84, unsigned char height=48);
+        void begin(unsigned char width=84, unsigned char height=48, unsigned char model=CHIP_PCD8544);
         void stop();
 
         // Erase everything on the display...
