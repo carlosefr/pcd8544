@@ -68,13 +68,15 @@ void PCD8544::begin(unsigned char width, unsigned char height, unsigned char mod
     // Set the LCD parameters...
     this->send(PCD8544_CMD, 0x21);  // extended instruction set control (H=1)
     this->send(PCD8544_CMD, 0x13);  // bias system (1:48)
-    this->send(PCD8544_CMD, 0xC2);  // set Vop (3.06 + 66 * 0.06 = 7V)
-    this->send(PCD8544_CMD, 0x20);  // extended instruction set control (H=0)
 
     if (model == CHIP_ST7576) {
+        this->send(PCD8544_CMD, 0xe0);  // higher Vop, too faint at default
         this->send(PCD8544_CMD, 0x05);  // partial display mode
+    } else {
+        this->send(PCD8544_CMD, 0xc2);  // default Vop (3.06 + 66 * 0.06 = 7V)
     }
 
+    this->send(PCD8544_CMD, 0x20);  // extended instruction set control (H=0)
     this->send(PCD8544_CMD, 0x09);  // all display segments on
 
     // Clear RAM contents...
