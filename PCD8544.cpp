@@ -40,6 +40,17 @@
 #include "charset.cpp"
 
 
+PCD8544::PCD8544(unsigned char sclk, unsigned char sdin,
+                 unsigned char dc, unsigned char reset,
+                 unsigned char sce):
+    pin_sclk(sclk),
+    pin_sdin(sdin),
+    pin_dc(dc),
+    pin_reset(reset),
+    pin_sce(sce)
+{}
+
+
 void PCD8544::begin(unsigned char width, unsigned char height, unsigned char model)
 {
     this->width = width;
@@ -52,18 +63,18 @@ void PCD8544::begin(unsigned char width, unsigned char height, unsigned char mod
     memset(this->custom, 0, sizeof(this->custom));
 
     // All pins are outputs (these displays cannot be read)...
-    pinMode(PCD8544_SCLK, OUTPUT);
-    pinMode(PCD8544_SDIN, OUTPUT);
-    pinMode(PCD8544_DC, OUTPUT);
-    pinMode(PCD8544_RESET, OUTPUT);
-    pinMode(PCD8544_SCE, OUTPUT);
+    pinMode(this->pin_sclk, OUTPUT);
+    pinMode(this->pin_sdin, OUTPUT);
+    pinMode(this->pin_dc, OUTPUT);
+    pinMode(this->pin_reset, OUTPUT);
+    pinMode(this->pin_sce, OUTPUT);
 
     // Reset the controller state...
-    digitalWrite(PCD8544_RESET, HIGH);
-    digitalWrite(PCD8544_SCE, HIGH);
-    digitalWrite(PCD8544_RESET, LOW);
+    digitalWrite(this->pin_reset, HIGH);
+    digitalWrite(this->pin_sce, HIGH);
+    digitalWrite(this->pin_reset, LOW);
     delay(100);  
-    digitalWrite(PCD8544_RESET, HIGH);
+    digitalWrite(this->pin_reset, HIGH);
 
     // Set the LCD parameters...
     this->send(PCD8544_CMD, 0x21);  // extended instruction set control (H=1)
@@ -280,11 +291,11 @@ void PCD8544::drawColumn(unsigned char lines, unsigned char value)
 
 void PCD8544::send(unsigned char type, unsigned char data)
 {
-    digitalWrite(PCD8544_DC, type);
+    digitalWrite(this->pin_dc, type);
   
-    digitalWrite(PCD8544_SCE, LOW);
-    shiftOut(PCD8544_SDIN, PCD8544_SCLK, MSBFIRST, data);
-    digitalWrite(PCD8544_SCE, HIGH);
+    digitalWrite(this->pin_sce, LOW);
+    shiftOut(this->pin_sdin, this->pin_sclk, MSBFIRST, data);
+    digitalWrite(this->pin_sce, HIGH);
 }
 
 
