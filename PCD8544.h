@@ -27,7 +27,11 @@
 #define PCD8544_H
 
 
+#if ARDUINO <= 22
 #include <WProgram.h>
+#else
+#include <Arduino.h>
+#endif
 
 
 // Chip variants supported...
