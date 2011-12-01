@@ -100,5 +100,5 @@ void loop() {
 }
 
 
-/* EOF - TempSensor.pde */
+/* EOF - Thermometer.ino  */
 

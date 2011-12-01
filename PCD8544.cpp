@@ -25,7 +25,12 @@
 
 #include "PCD8544.h"
 
+#if ARDUINO < 100
 #include <WProgram.h>
+#else
+#include <Arduino.h>
+#endif
+
 #include <avr/pgmspace.h>
 
 
@@ -186,11 +191,11 @@ void PCD8544::createChar(unsigned char chr, const unsigned char *glyph)
 }
 
 
-void PCD8544::write(unsigned char chr)
+size_t PCD8544::write(uint8_t chr)
 {
     // ASCII 7-bit only...
     if (chr >= 0x80) {
-        return;
+        return 0;
     }
 
     const unsigned char *glyph;
@@ -225,6 +230,8 @@ void PCD8544::write(unsigned char chr)
     if (this->column == 0) {
         this->line = (this->line + 1) % (this->height/9 + 1);
     }
+
+    return 1;
 }
 
 

@@ -27,7 +27,7 @@
 #define PCD8544_H
 
 
-#if ARDUINO <= 22
+#if ARDUINO < 100
 #include <WProgram.h>
 #else
 #include <Arduino.h>
@@ -76,7 +76,7 @@ class PCD8544: public Print {
         void createChar(unsigned char chr, const unsigned char *glyph);
 
         // Write an ASCII character at the current cursor position (7-bit)...
-        virtual void write(unsigned char chr);
+        virtual size_t write(uint8_t chr);
 
         // Draw a bitmap at the current cursor position...
         void drawBitmap(const unsigned char *data, unsigned char columns, unsigned char lines);
