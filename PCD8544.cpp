@@ -191,11 +191,19 @@ void PCD8544::createChar(unsigned char chr, const unsigned char *glyph)
 }
 
 
+#if ARDUINO < 100
+void PCD8544::write(uint8_t chr)
+#else
 size_t PCD8544::write(uint8_t chr)
+#endif
 {
     // ASCII 7-bit only...
     if (chr >= 0x80) {
+#if ARDUINO < 100
+        return;
+#else
         return 0;
+#endif
     }
 
     const unsigned char *glyph;
@@ -231,7 +239,9 @@ size_t PCD8544::write(uint8_t chr)
         this->line = (this->line + 1) % (this->height/9 + 1);
     }
 
+#if ARDUINO >= 100
     return 1;
+#endif
 }
 
 
