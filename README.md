@@ -1,7 +1,7 @@
 What is it?
 ===========
 
-*PCD8544* is a library for the [Arduino](http://arduino.cc/) to interface with LCDs based on the
+**PCD8544** is a library for the [Arduino](http://arduino.cc/) to interface with LCDs based on the
 Philips PCD8544 controller ([datasheet](https://github.com/carlosefr/pcd8544/blob/master/docs/pcd8544.pdf?raw=true))
 or compatibles. These displays are commonly found on older monochrome mobile phones, such as the
 [Nokia 3310](http://en.wikipedia.org/wiki/Nokia_3310) or [5110](http://en.wikipedia.org/wiki/Nokia_5110),
