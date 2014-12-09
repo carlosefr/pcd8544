@@ -7,7 +7,7 @@ or compatibles. These displays are commonly found on older monochrome mobile pho
 [Nokia 3310](http://en.wikipedia.org/wiki/Nokia_3310) or [5110](http://en.wikipedia.org/wiki/Nokia_5110),
 so if you have one of these stuck in a drawer, take it out and start hacking away! :)
 
-![PCD8544.png](http://www.carlos-rodrigues.com/projects/pcd8544/PCD8544.png)
+![PCD8544.png](http://cloud.carlos-rodrigues.com/projects/pcd8544/PCD8544.png)
 
 Installation
 ============
@@ -52,4 +52,4 @@ Custom Symbols
 
 The library allows the use of custom bitmap symbols (5x8), defined by an array of five bytes.
 To make it easy to create custom symbols, there's a graphical glyph editor
-[available online](http://www.carlos-rodrigues.com/projects/pcd8544/).
+[available online](http://cloud.carlos-rodrigues.com/projects/pcd8544/).
