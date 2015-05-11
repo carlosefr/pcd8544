@@ -12,8 +12,9 @@ so if you have one of these stuck in a drawer, take it out and start hacking awa
 Installation
 ============
 
-Uncompress the ".zip" file into your `_<arduino sketch folder>_/libraries` folder (you may need to create it first).
-After restarting the Arduino IDE, it should appear in the libraries and examples menus.
+Download the latest "PCD8544-arduino-_version_.zip" file from the [releases](https://github.com/carlosefr/pcd8544/releases) section. Then open it from the `Sketch > Include Library > Add .ZIP Library...` menu inside the Arduino IDE and a new "PCD8544" entry should appear in the `Sketch > Include Library` and `File > Examples` menus.
+
+![Arduino IDE](http://cloud.carlos-rodrigues.com/projects/pcd8544/screenshot-01.png)
 
 How it Works
 ============
