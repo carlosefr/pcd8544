@@ -2,7 +2,7 @@ What is it?
 ===========
 
 **PCD8544** is a library for the [Arduino](http://arduino.cc/) to interface with LCDs based on the
-Philips PCD8544 controller ([datasheet](https://github.com/carlosefr/pcd8544/blob/master/docs/pcd8544.pdf?raw=true))
+Philips PCD8544 controller ([datasheet](https://github.com/carlosefr/pcd8544/blob/docs/docs/pcd8544.pdf?raw=true))
 or compatibles. These displays are commonly found on older monochrome mobile phones, such as the
 [Nokia 3310](http://en.wikipedia.org/wiki/Nokia_3310) or [5110](http://en.wikipedia.org/wiki/Nokia_5110),
 so if you have one of these stuck in a drawer, take it out and start hacking away! :)
@@ -12,7 +12,7 @@ so if you have one of these stuck in a drawer, take it out and start hacking awa
 Installation
 ============
 
-Download the latest "PCD8544-arduino-_version_.zip" file from the [releases](https://github.com/carlosefr/pcd8544/releases) section. Then open it from the `Sketch > Include Library > Add .ZIP Library...` menu inside the Arduino IDE and a new "PCD8544" entry should appear in the `Sketch > Include Library` and `File > Examples` menus.
+Download the latest zip file from the [releases](https://github.com/carlosefr/pcd8544/releases) section. Then open it from the `Sketch > Include Library > Add .ZIP Library...` menu inside the Arduino IDE and a new "PCD8544" entry should appear in the `Sketch > Include Library` and `File > Examples` menus.
 
 ![Arduino IDE](http://cloud.carlos-rodrigues.com/projects/pcd8544/screenshot-01.png)
 
