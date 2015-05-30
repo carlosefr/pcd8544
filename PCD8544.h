@@ -34,7 +34,7 @@
 #endif
 
 
-// Chip variants supported...
+// Chip variants supported (ST7576 is experimental)...
 #define CHIP_PCD8544 0
 #define CHIP_ST7576  1
 
@@ -66,6 +66,9 @@ class PCD8544: public Print {
         // Activate white-on-black mode (whole display)...
         void setInverse(bool inverse);
 
+        // Set display contrast level (0-127)...
+        void setContrast(unsigned char level);
+
         // Place the cursor at the start of the current line...
         void home();
 
@@ -94,6 +97,9 @@ class PCD8544: public Print {
         unsigned char pin_dc;
         unsigned char pin_reset;
         unsigned char pin_sce;
+
+        // Chip variant in use...
+        unsigned char model;
 
         // The size of the display, in pixels...
         unsigned char width;

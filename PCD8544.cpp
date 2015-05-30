@@ -61,6 +61,9 @@ void PCD8544::begin(unsigned char width, unsigned char height, unsigned char mod
     this->width = width;
     this->height = height;
 
+    // Only two chip variants are currently known/supported...
+    this->model = (model == CHIP_ST7576) ? CHIP_ST7576 : CHIP_PCD8544;
+
     this->column = 0;
     this->line = 0;
 
@@ -85,7 +88,7 @@ void PCD8544::begin(unsigned char width, unsigned char height, unsigned char mod
     this->send(PCD8544_CMD, 0x21);  // extended instruction set control (H=1)
     this->send(PCD8544_CMD, 0x13);  // bias system (1:48)
 
-    if (model == CHIP_ST7576) {
+    if (this->model == CHIP_ST7576) {
         this->send(PCD8544_CMD, 0xe0);  // higher Vop, too faint at default
         this->send(PCD8544_CMD, 0x05);  // partial display mode
     } else {
@@ -161,6 +164,25 @@ inline void PCD8544::noDisplay()
 void PCD8544::setInverse(bool inverse)
 {
     this->send(PCD8544_CMD, inverse ? 0x0d : 0x0c);
+}
+
+
+void PCD8544::setContrast(unsigned char level)
+{
+    // The PCD8544 datasheet specifies a maximum Vop of 8.5V for safe
+    // operation in low temperatures, which limits the contrast level.
+    if (this->model == CHIP_PCD8544 && level > 90) {
+        level = 90;  // Vop = 3.06 + 90 * 0.06 = 8.46V
+    }
+
+    // The ST7576 datasheet specifies a minimum Vop of 4V.
+    if (this->model == CHIP_ST7576 && level < 36) {
+        level = 36;  // Vop = 2.94 + 36 * 0.06 = 4.02V
+    }
+
+    this->send(PCD8544_CMD, 0x21);  // extended instruction set control (H=1)
+    this->send(PCD8544_CMD, 0x80 | (level & 0x7f));
+    this->send(PCD8544_CMD, 0x20);  // extended instruction set control (H=0)
 }
 
 
