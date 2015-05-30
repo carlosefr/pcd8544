@@ -55,7 +55,7 @@ class PCD8544: public Print {
         // Erase everything on the display...
         void clear();
         void clearLine();  // ...or just the current line
-        
+
         // Control the display's power state...
         void setPower(bool on);
 
@@ -81,7 +81,7 @@ class PCD8544: public Print {
         // Write an ASCII character at the current cursor position (7-bit)...
 #if ARDUINO < 100
         virtual void write(uint8_t chr);
-#else        
+#else
         virtual size_t write(uint8_t chr);
 #endif
 

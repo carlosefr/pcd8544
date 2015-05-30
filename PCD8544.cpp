@@ -81,7 +81,7 @@ void PCD8544::begin(unsigned char width, unsigned char height, unsigned char mod
     digitalWrite(this->pin_reset, HIGH);
     digitalWrite(this->pin_sce, HIGH);
     digitalWrite(this->pin_reset, LOW);
-    delay(100);  
+    delay(100);
     digitalWrite(this->pin_reset, HIGH);
 
     // Set the LCD parameters...
@@ -198,7 +198,7 @@ void PCD8544::setCursor(unsigned char column, unsigned char line)
     this->line = (line % (this->height/9 + 1));
 
     this->send(PCD8544_CMD, 0x80 | this->column);
-    this->send(PCD8544_CMD, 0x40 | this->line); 
+    this->send(PCD8544_CMD, 0x40 | this->line);
 }
 
 
@@ -208,7 +208,7 @@ void PCD8544::createChar(unsigned char chr, const unsigned char *glyph)
     if (chr >= ' ') {
         return;
     }
-    
+
     this->custom[chr] = glyph;
 }
 
@@ -301,7 +301,7 @@ void PCD8544::drawColumn(unsigned char lines, unsigned char value)
 
     // Find the line where "value" resides...
     unsigned char mark = (lines*8 - 1 - value)/8;
-    
+
     // Clear the lines above the mark...
     for (unsigned char line = 0; line < mark; line++) {
         this->setCursor(scolumn, sline + line);
@@ -322,16 +322,16 @@ void PCD8544::drawColumn(unsigned char lines, unsigned char value)
         this->setCursor(scolumn, sline + line);
         this->send(PCD8544_DATA, 0xff);
     }
-  
+
     // Leave the cursor in a consistent position...
-    this->setCursor(scolumn + 1, sline); 
+    this->setCursor(scolumn + 1, sline);
 }
 
 
 void PCD8544::send(unsigned char type, unsigned char data)
 {
     digitalWrite(this->pin_dc, type);
-  
+
     digitalWrite(this->pin_sce, LOW);
     shiftOut(this->pin_sdin, this->pin_sclk, MSBFIRST, data);
     digitalWrite(this->pin_sce, HIGH);
