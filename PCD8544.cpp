@@ -177,7 +177,7 @@ void PCD8544::setContrast(unsigned char level)
 
     // The ST7576 datasheet specifies a minimum Vop of 4V.
     if (this->model == CHIP_ST7576 && level < 36) {
-        level = 36;  // Vop = 2.94 + 36 * 0.06 = 4.02V
+        level = 36;  // Vop = 2.94 + 36 * 0.03 = 4.02V
     }
 
     this->send(PCD8544_CMD, 0x21);  // extended instruction set control (H=1)
