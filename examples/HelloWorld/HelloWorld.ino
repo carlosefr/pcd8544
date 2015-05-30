@@ -53,7 +53,7 @@ static PCD8544 lcd;
 void setup() {
   // PCD8544-compatible displays may have a different resolution...
   lcd.begin(84, 48);
-  
+
   // Add the smiley to position "0" of the ASCII table...
   lcd.createChar(0, glyph);
 }
@@ -73,7 +73,11 @@ void loop() {
   lcd.write(' ');
   lcd.write(0);  // write the smiley
 
-  delay(500);  
+  // Use a potentiometer to set the LCD contrast...
+  // short level = map(analogRead(A0), 0, 1023, 0, 127);
+  // lcd.setContrast(level);
+
+  delay(200);
   counter++;
 }
 
