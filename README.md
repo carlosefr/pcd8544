@@ -7,7 +7,7 @@ or compatibles. These displays are commonly found on older monochrome mobile pho
 [Nokia 3310](http://en.wikipedia.org/wiki/Nokia_3310) or [5110](http://en.wikipedia.org/wiki/Nokia_5110),
 so if you have one of these stuck in a drawer, take it out and start hacking away! :)
 
-![PCD8544.png](http://cloud.carlos-rodrigues.com/projects/pcd8544/PCD8544.png)
+![PCD8544.png](http://cloud.carlos-rodrigues.com/projects/pcd8544/PCD8544.jpg)
 
 Installation
 ============
@@ -39,10 +39,12 @@ Nokia 5110 displays are slightly different. They have an external oscillator pin
 be connected to +3.3V. I haven't used one of these myself, so please see the diagrams on
 [this page](http://serdisplib.sourceforge.net/ser/pcd8544.html) for more details.
 
-Since these LCDs are **3.3V** devices, you have to add
+Since these LCDs are **3.3V** devices, you should add
 [extra components](http://www.sparkfun.com/commerce/tutorial_info.php?tutorials_id=65) to
 connect it to the digital pins of the Arduino (not necessary if you are using a 3.3V variant
-of the Arduino, such as the [Arduino Pro](http://www.arduino.cc/en/Main/ArduinoBoardPro)).
+of the Arduino, such as the [Arduino Pro](http://www.arduino.cc/en/Main/ArduinoBoardPro)). However, the I/O pins
+are supposed to be 5V tolerant, so you can get by with 1K resistors in series with each pin if you like to live
+dangerously.
 
 Now, take a moment and read through the included [`HelloWorld.ino`](examples/HelloWorld/HelloWorld.ino) example.
 It shows how to use the basic features of the library. There is also another
