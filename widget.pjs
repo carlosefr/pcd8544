@@ -1,0 +1,163 @@
+/*
+ * widget.pjs - glyph editor widget for the PCD8544 arduino library.
+ *
+ * Copyright (c) 2010 Carlos Rodrigues <cefrodrigues@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+final int FONT_WIDTH = 5;
+final int FONT_HEIGHT = 8;
+
+final int BIG_PIXEL = 40;
+final int SMALL_PIXEL = 4;
+final int SPACING = 50;
+
+
+boolean[][] pxGrid;
+
+
+void setup() {
+    size(BIG_PIXEL*FONT_WIDTH + SPACING + SMALL_PIXEL*FONT_WIDTH + 1, BIG_PIXEL*FONT_HEIGHT + 1);
+    frameRate(10);
+    smooth();
+    
+    // Initialize the pixels to off...
+    pxGrid = new boolean[FONT_WIDTH][FONT_HEIGHT];    
+    for (int x = 0; x < FONT_WIDTH; x++) {
+      for (int y = 0; y < FONT_HEIGHT; y++) {
+        pxGrid[x][y] = false;
+      }
+    }
+    
+    background(#ffffff);
+}
+
+
+void draw() {
+    background(#ffffff);
+  
+    // Draw the big character (editable)...
+    stroke(#545412);
+    for (int y = 0; y < FONT_HEIGHT; y++) {
+        for (int x = 0; x < FONT_WIDTH; x++) {
+            fill(pxGrid[x][y] ? #3d3d0d : #a0af37);
+            rect(x*BIG_PIXEL, y*BIG_PIXEL, BIG_PIXEL, BIG_PIXEL);
+        }
+    }
+
+    // Draw the small character...
+    stroke(#a0af37);
+    for (int y = 0; y < FONT_HEIGHT; y++) {
+        for (int x = 0; x < FONT_WIDTH; x++) {
+            fill(pxGrid[x][y] ? #3d3d0d : #a0af37);
+            rect((BIG_PIXEL*FONT_WIDTH + SPACING) + x*SMALL_PIXEL,
+                 (BIG_PIXEL*FONT_HEIGHT - SMALL_PIXEL*FONT_HEIGHT) + y*SMALL_PIXEL,
+                 SMALL_PIXEL, SMALL_PIXEL);
+        }
+    }
+  
+    // Draw the arrow...
+    noStroke();
+    fill(#444444);
+    rect(BIG_PIXEL*FONT_WIDTH + 5,
+         BIG_PIXEL*FONT_HEIGHT - SMALL_PIXEL*(FONT_HEIGHT/2) - 2,
+         SPACING-20, 4);
+    triangle(BIG_PIXEL*FONT_WIDTH + SPACING-20, BIG_PIXEL*FONT_HEIGHT - SMALL_PIXEL*(FONT_HEIGHT/2) - 5,
+             BIG_PIXEL*FONT_WIDTH + SPACING-20, BIG_PIXEL*FONT_HEIGHT - SMALL_PIXEL*(FONT_HEIGHT/2) + 5,
+             BIG_PIXEL*FONT_WIDTH + SPACING-5, BIG_PIXEL*FONT_HEIGHT - SMALL_PIXEL*(FONT_HEIGHT/2));
+}
+
+
+void mouseReleased() {
+    if (mouseX < BIG_PIXEL*FONT_WIDTH && mouseY < BIG_PIXEL*FONT_HEIGHT) {
+        pxGrid[int(mouseX/BIG_PIXEL)][int(mouseY/BIG_PIXEL)] = !pxGrid[int(mouseX/BIG_PIXEL)][int(mouseY/BIG_PIXEL)];
+    }
+}
+
+
+void clearGlyph() {
+    for (int x = 0; x < FONT_WIDTH; x++) {
+        for (int y = 0; y < FONT_HEIGHT; y++) {
+            pxGrid[x][y] = false;
+        }
+    }
+}
+
+
+String getGlyph() {
+    String[] bytes = new String[FONT_WIDTH];
+  
+    for (int x = 0; x < FONT_WIDTH; x++) {
+        int b = 0;
+    
+        for (int y = 0; y < FONT_HEIGHT; y++) {
+            if (pxGrid[x][y]) {
+                b |= (1 << y);
+            }
+        }
+    
+        bytes[x] = (b < 16) ? "0x0" + b.toString(16) : "0x" + b.toString(16);
+    }
+  
+    return bytes.join(", ");
+}
+
+
+boolean setGlyph(String glyph) {
+    if (glyph.trim().match("^$")) {
+        clearGlyph();
+
+        return true;
+    }
+
+    String[] bs = glyph.split(",");
+
+    if (bs.length != FONT_WIDTH) {
+        return false;
+    }
+
+    // Do nothing if the string is not well-formed...
+    boolean[][] tmpGrid = new boolean[FONT_WIDTH][FONT_HEIGHT];
+
+    for (int x = 0; x < FONT_WIDTH; x++) {
+        if (!bs[x].trim().match("^0x[0-9a-fA-F]?[0-9a-fA-F]$")) {
+            return false;
+        }
+
+        int b = parseInt(bs[x], 16);
+
+        for (int y = 0; y < FONT_HEIGHT; y++) {
+            tmpGrid[x][y] = ((b & (1 << y)) > 0) ? true : false;
+        }
+    }
+
+    // The string was well-formed, update for real...
+    for (int x = 0; x < FONT_WIDTH; x++) {
+        for (int y = 0; y < FONT_HEIGHT; y++) {
+            pxGrid[x][y] = tmpGrid[x][y];
+        }
+    }
+
+    return true;
+}
+
+
+/* vim: set expandtab ts=4 sw=4: */

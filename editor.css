@@ -1,0 +1,67 @@
+/*
+ * Carlos Rodrigues (c) 2010
+ */
+
+
+html {
+    background: #444;
+}
+
+body {
+    font: normal 13px Calibri, Arial, sans-serif;
+    max-width: 700px;
+    margin: 20px 60px;
+    padding: 30px;
+    background: #fff;
+}
+
+a:link, a:visited {
+    color: #686c6d;
+}
+
+a:hover, a:active {
+    color: #0088a3;
+}
+
+h1 {
+    font: bold 44px Garamond, 'Times New Roman', serif;
+    text-shadow: rgba(128, 128, 128, 0.496094) 1px 2px 2px;
+}
+
+input {
+    border: 1px solid #ccc;
+}
+
+#editor {
+    margin: 30px;
+}
+
+#string {
+    font-family: Consolas, 'Courier New', Courier, monospace;    
+    width: 210px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#footer {
+    border-top: 1px solid #ccc;
+    margin-top: 20px;
+    padding-top: 5px;
+    font-size: 10px;
+}
+
+.code {
+    font-family: Consolas, 'Courier New', Courier, monospace;
+}
+
+.keyword {
+    color: #c60;
+}
+
+.error {
+    background: #ffc0c0;
+    border: 1px solid #ff0000;
+}
+
+
+/* vim: set expandtab ts=4 sw=4: */

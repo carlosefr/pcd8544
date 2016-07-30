@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <title>PCD8544 Glyph Editor</title>
+    <meta charset="utf-8">
+
+    <meta name="author" content="Carlos Rodrigues">
+    <meta name="description" content="Glyph editor for the PCD8544 Arduino library.">
+
+    <link rel="stylesheet" href="editor.css">
+</head>
+
+<body>
+<h1>PCD8544 Glyph Editor</h1>
+<p>Using the editor below you can easily generate a custom symbol to be used with
+   the <a href="https://github.com/carlosefr/pcd8544">PCD8544 library</a> for the Arduino.
+   The output is a sequence of bytes in hexadecimal "C" format that can be pasted into your Arduino source code.
+   Check this <a href="https://github.com/carlosefr/pcd8544/blob/master/examples/Thermometer/Thermometer.ino">example</a> for more information.</p>
+
+<div id="editor">
+    <canvas id="glyph" data-src="widget.pjs"></canvas>
+    <form id="form" method="get" action="">
+        <span class="code"><span class="keyword">static byte</span> custom_glyph[] = { </span><input id="string" name="string" type="text"><span class="code"> };</span>
+        <button id="draw" type="button">Draw</button>
+        <button id="clear" type="button">Clear</button>
+    </form>
+</div>
+<p>You can also paste an already existing byte sequence into the text box and click <b>draw</b> to start from there.
+   This can be useful if you're looking to change the font included with the library, or just want to add accented characters to it.</p>
+
+<p id="footer">Carlos Rodrigues &copy; 2010</p>
+
+<div id="scripts" style="display: none;"><!-- Hack for IE 7 -->
+    <script type="text/javascript" src="processing-1.0.0.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="editor.js"></script>
+</div>
+</body>
+</html>
+<!-- vim: set expandtab ts=4 sw=4: -->
