@@ -55,4 +55,4 @@ Custom Symbols
 
 The library allows the use of custom bitmap symbols (5x8), defined by an array of five bytes.
 To make it easy to create custom symbols, there's a graphical glyph editor
-[available online](http://cloud.carlos-rodrigues.com/projects/pcd8544/).
+[available online](http://carlosefr.github.io/pcd8544/).
