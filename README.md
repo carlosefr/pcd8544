@@ -7,14 +7,16 @@ or compatibles. These displays are commonly found on older monochrome mobile pho
 [Nokia 3310](http://en.wikipedia.org/wiki/Nokia_3310) or [5110](http://en.wikipedia.org/wiki/Nokia_5110),
 so if you have one of these stuck in a drawer, take it out and start hacking away! :)
 
-![PCD8544.png](http://cloud.carlos-rodrigues.com/projects/pcd8544/PCD8544.jpg)
+This library is meant to have a minimal memory footprint. If you need graphics and other features and can spare the resources, check out the [library](https://github.com/adafruit/Adafruit-PCD8544-Nokia-5110-LCD-library) from Adafruit.
+
+![PCD8544.png](https://raw.githubusercontent.com/carlosefr/pcd8544/gh-pages/PCD8544.jpg)
 
 Installation
 ============
 
 Download the latest zip file from the [releases](https://github.com/carlosefr/pcd8544/releases) section. Then open it from the `Sketch > Include Library > Add .ZIP Library...` menu inside the Arduino IDE and a new "PCD8544" entry should appear in the `Sketch > Include Library` and `File > Examples` menus.
 
-![Arduino IDE](http://cloud.carlos-rodrigues.com/projects/pcd8544/screenshot-01.png)
+![Arduino IDE](https://raw.githubusercontent.com/carlosefr/pcd8544/gh-pages/screenshot-01.png)
 
 How it Works
 ============
