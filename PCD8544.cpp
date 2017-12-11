@@ -31,7 +31,11 @@
 #include <Arduino.h>
 #endif
 
+#ifdef ESP_H
+#include <pgmspace.h>
+#else
 #include <avr/pgmspace.h>
+#endif
 
 
 #define PCD8544_CMD  LOW

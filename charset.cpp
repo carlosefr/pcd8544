@@ -23,7 +23,11 @@
  */
 
 
+#ifdef ESP_H
+#include <pgmspace.h>
+#else
 #include <avr/pgmspace.h>
+#endif
 
 
 // The 7-bit ASCII character set...
