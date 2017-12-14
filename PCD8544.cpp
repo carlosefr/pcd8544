@@ -31,7 +31,7 @@
 #include <Arduino.h>
 #endif
 
-#ifdef ESP_H
+#if defined (__XTENSA__)
 #include <pgmspace.h>
 #else
 #include <avr/pgmspace.h>
