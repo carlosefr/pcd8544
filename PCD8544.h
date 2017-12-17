@@ -27,11 +27,7 @@
 #define PCD8544_H
 
 
-#if ARDUINO < 100
-#include <WProgram.h>
-#else
 #include <Arduino.h>
-#endif
 
 
 // Chip variants supported (ST7576 is experimental)...
@@ -79,11 +75,7 @@ class PCD8544: public Print {
         void createChar(unsigned char chr, const unsigned char *glyph);
 
         // Write an ASCII character at the current cursor position (7-bit)...
-#if ARDUINO < 100
-        virtual void write(uint8_t chr);
-#else
         virtual size_t write(uint8_t chr);
-#endif
 
         // Draw a bitmap at the current cursor position...
         void drawBitmap(const unsigned char *data, unsigned char columns, unsigned char lines);
