@@ -31,7 +31,11 @@
 #include <Arduino.h>
 #endif
 
+#if defined (__XTENSA__)
+#include <pgmspace.h>
+#else
 #include <avr/pgmspace.h>
+#endif
 
 
 #define PCD8544_CMD  LOW
