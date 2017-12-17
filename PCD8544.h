@@ -38,14 +38,14 @@
 class PCD8544: public Print {
     public:
         // All the pins can be changed from the default values...
-        PCD8544(unsigned char sclk  = 3,   /* clock       (display pin 2) */
-                unsigned char sdin  = 4,   /* data-in     (display pin 3) */
-                unsigned char dc    = 5,   /* data select (display pin 4) */
-                unsigned char reset = 6,   /* reset       (display pin 8) */
-                unsigned char sce   = 7);  /* enable      (display pin 5) */
+        PCD8544(uint8_t sclk  = 3,   /* clock       (display pin 2) */
+                uint8_t sdin  = 4,   /* data-in     (display pin 3) */
+                uint8_t dc    = 5,   /* data select (display pin 4) */
+                uint8_t reset = 6,   /* reset       (display pin 8) */
+                uint8_t sce   = 7);  /* enable      (display pin 5) */
 
         // Display initialization (dimensions in pixels)...
-        void begin(unsigned char width=84, unsigned char height=48, unsigned char model=CHIP_PCD8544);
+        void begin(uint8_t width=84, uint8_t height=48, uint8_t model=CHIP_PCD8544);
         void stop();
 
         // Erase everything on the display...
@@ -63,49 +63,49 @@ class PCD8544: public Print {
         void setInverse(bool inverse);
 
         // Set display contrast level (0-127)...
-        void setContrast(unsigned char level);
+        void setContrast(uint8_t level);
 
         // Place the cursor at the start of the current line...
         void home();
 
         // Place the cursor at position (column, line)...
-        void setCursor(unsigned char column, unsigned char line);
+        void setCursor(uint8_t column, uint8_t line);
 
         // Assign a user-defined glyph (5x8) to an ASCII character (0-31)...
-        void createChar(unsigned char chr, const unsigned char *glyph);
+        void createChar(uint8_t chr, const uint8_t *glyph);
 
         // Write an ASCII character at the current cursor position (7-bit)...
         virtual size_t write(uint8_t chr);
 
         // Draw a bitmap at the current cursor position...
-        void drawBitmap(const unsigned char *data, unsigned char columns, unsigned char lines);
+        void drawBitmap(const uint8_t *data, uint8_t columns, uint8_t lines);
 
         // Draw a chart element at the current cursor position...
-        void drawColumn(unsigned char lines, unsigned char value);
+        void drawColumn(uint8_t lines, uint8_t value);
 
     private:
-        unsigned char pin_sclk;
-        unsigned char pin_sdin;
-        unsigned char pin_dc;
-        unsigned char pin_reset;
-        unsigned char pin_sce;
+        uint8_t pin_sclk;
+        uint8_t pin_sdin;
+        uint8_t pin_dc;
+        uint8_t pin_reset;
+        uint8_t pin_sce;
 
         // Chip variant in use...
-        unsigned char model;
+        uint8_t model;
 
         // The size of the display, in pixels...
-        unsigned char width;
-        unsigned char height;
+        uint8_t width;
+        uint8_t height;
 
         // Current cursor position...
-        unsigned char column;
-        unsigned char line;
+        uint8_t column;
+        uint8_t line;
 
         // User-defined glyphs (below the ASCII space character)...
-        const unsigned char *custom[' '];
+        const uint8_t *custom[' '];
 
         // Send a command or data to the display...
-        void send(unsigned char type, unsigned char data);
+        void send(uint8_t type, uint8_t data);
 };
 
 

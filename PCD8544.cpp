@@ -45,9 +45,7 @@
 #include "charset.cpp"
 
 
-PCD8544::PCD8544(unsigned char sclk, unsigned char sdin,
-                 unsigned char dc, unsigned char reset,
-                 unsigned char sce):
+PCD8544::PCD8544(uint8_t sclk, uint8_t sdin, uint8_t dc, uint8_t reset, uint8_t sce):
     pin_sclk(sclk),
     pin_sdin(sdin),
     pin_dc(dc),
@@ -56,7 +54,7 @@ PCD8544::PCD8544(unsigned char sclk, unsigned char sdin,
 {}
 
 
-void PCD8544::begin(unsigned char width, unsigned char height, unsigned char model)
+void PCD8544::begin(uint8_t width, uint8_t height, uint8_t model)
 {
     this->width = width;
     this->height = height;
@@ -123,7 +121,7 @@ void PCD8544::clear()
 {
     this->setCursor(0, 0);
 
-    for (unsigned short i = 0; i < this->width * (this->height/8); i++) {
+    for (uint16_t i = 0; i < this->width * (this->height/8); i++) {
         this->send(PCD8544_DATA, 0x00);
     }
 
@@ -135,7 +133,7 @@ void PCD8544::clearLine()
 {
     this->setCursor(0, this->line);
 
-    for (unsigned char i = 0; i < this->width; i++) {
+    for (uint8_t i = 0; i < this->width; i++) {
         this->send(PCD8544_DATA, 0x00);
     }
 
@@ -167,7 +165,7 @@ void PCD8544::setInverse(bool inverse)
 }
 
 
-void PCD8544::setContrast(unsigned char level)
+void PCD8544::setContrast(uint8_t level)
 {
     // The PCD8544 datasheet specifies a maximum Vop of 8.5V for safe
     // operation in low temperatures, which limits the contrast level.
@@ -192,7 +190,7 @@ void PCD8544::home()
 }
 
 
-void PCD8544::setCursor(unsigned char column, unsigned char line)
+void PCD8544::setCursor(uint8_t column, uint8_t line)
 {
     this->column = (column % this->width);
     this->line = (line % (this->height/9 + 1));
@@ -202,7 +200,7 @@ void PCD8544::setCursor(unsigned char column, unsigned char line)
 }
 
 
-void PCD8544::createChar(unsigned char chr, const unsigned char *glyph)
+void PCD8544::createChar(uint8_t chr, const uint8_t *glyph)
 {
     // ASCII 0-31 only...
     if (chr >= ' ') {
@@ -220,8 +218,8 @@ size_t PCD8544::write(uint8_t chr)
         return 0;
     }
 
-    const unsigned char *glyph;
-    unsigned char pgm_buffer[5];
+    const uint8_t *glyph;
+    uint8_t pgm_buffer[5];
 
     if (chr >= ' ') {
         // Regular ASCII characters are kept in flash to save RAM...
@@ -239,7 +237,7 @@ size_t PCD8544::write(uint8_t chr)
     }
 
     // Output one column at a time...
-    for (unsigned char i = 0; i < 5; i++) {
+    for (uint8_t i = 0; i < 5; i++) {
         this->send(PCD8544_DATA, glyph[i]);
     }
 
@@ -257,19 +255,19 @@ size_t PCD8544::write(uint8_t chr)
 }
 
 
-void PCD8544::drawBitmap(const unsigned char *data, unsigned char columns, unsigned char lines)
+void PCD8544::drawBitmap(const uint8_t *data, uint8_t columns, uint8_t lines)
 {
-    unsigned char scolumn = this->column;
-    unsigned char sline = this->line;
+    uint8_t scolumn = this->column;
+    uint8_t sline = this->line;
 
     // The bitmap will be clipped at the right/bottom edge of the display...
-    unsigned char mx = (scolumn + columns > this->width) ? (this->width - scolumn) : columns;
-    unsigned char my = (sline + lines > this->height/8) ? (this->height/8 - sline) : lines;
+    uint8_t mx = (scolumn + columns > this->width) ? (this->width - scolumn) : columns;
+    uint8_t my = (sline + lines > this->height/8) ? (this->height/8 - sline) : lines;
 
-    for (unsigned char y = 0; y < my; y++) {
+    for (uint8_t y = 0; y < my; y++) {
         this->setCursor(scolumn, sline + y);
 
-        for (unsigned char x = 0; x < mx; x++) {
+        for (uint8_t x = 0; x < mx; x++) {
             this->send(PCD8544_DATA, data[y * columns + x]);
         }
     }
@@ -279,10 +277,10 @@ void PCD8544::drawBitmap(const unsigned char *data, unsigned char columns, unsig
 }
 
 
-void PCD8544::drawColumn(unsigned char lines, unsigned char value)
+void PCD8544::drawColumn(uint8_t lines, uint8_t value)
 {
-    unsigned char scolumn = this->column;
-    unsigned char sline = this->line;
+    uint8_t scolumn = this->column;
+    uint8_t sline = this->line;
 
     // Keep "value" within range...
     if (value > lines*8) {
@@ -290,17 +288,17 @@ void PCD8544::drawColumn(unsigned char lines, unsigned char value)
     }
 
     // Find the line where "value" resides...
-    unsigned char mark = (lines*8 - 1 - value)/8;
+    uint8_t mark = (lines*8 - 1 - value)/8;
 
     // Clear the lines above the mark...
-    for (unsigned char line = 0; line < mark; line++) {
+    for (uint8_t line = 0; line < mark; line++) {
         this->setCursor(scolumn, sline + line);
         this->send(PCD8544_DATA, 0x00);
     }
 
     // Compute the byte to draw at the "mark" line...
-    unsigned char b = 0xff;
-    for (unsigned char i = 0; i < lines*8 - mark*8 - value; i++) {
+    uint8_t b = 0xff;
+    for (uint8_t i = 0; i < lines*8 - mark*8 - value; i++) {
         b <<= 1;
     }
 
@@ -308,7 +306,7 @@ void PCD8544::drawColumn(unsigned char lines, unsigned char value)
     this->send(PCD8544_DATA, b);
 
     // Fill the lines below the mark...
-    for (unsigned char line = mark + 1; line < lines; line++) {
+    for (uint8_t line = mark + 1; line < lines; line++) {
         this->setCursor(scolumn, sline + line);
         this->send(PCD8544_DATA, 0xff);
     }
@@ -318,7 +316,7 @@ void PCD8544::drawColumn(unsigned char lines, unsigned char value)
 }
 
 
-void PCD8544::send(unsigned char type, unsigned char data)
+void PCD8544::send(uint8_t type, uint8_t data)
 {
     digitalWrite(this->pin_dc, type);
 
