@@ -248,7 +248,7 @@ size_t PCD8544::write(uint8_t chr)
     }
 
     // One column between characters...
-    this->send(PCD8544_DATA, 0x00);
+    this->send(PCD8544_DATA, is_output_inverted ? 0xff : 0x00);
 
     // Update the cursor position...
     this->column = (this->column + 6) % this->width;
