@@ -165,6 +165,12 @@ void PCD8544::setInverse(bool inverse)
 }
 
 
+void PCD8544::setOutputInverse(bool is_output_inverted)
+{
+    this->is_output_inverted = is_output_inverted;
+}
+
+
 void PCD8544::setContrast(uint8_t level)
 {
     // The PCD8544 datasheet specifies a maximum Vop of 8.5V for safe
@@ -238,7 +244,7 @@ size_t PCD8544::write(uint8_t chr)
 
     // Output one column at a time...
     for (uint8_t i = 0; i < 5; i++) {
-        this->send(PCD8544_DATA, glyph[i]);
+        this->send(PCD8544_DATA, is_output_inverted ? ~glyph[i] : glyph[i]);
     }
 
     // One column between characters...
