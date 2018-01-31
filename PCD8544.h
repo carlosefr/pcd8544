@@ -63,7 +63,7 @@ class PCD8544: public Print {
         void setInverse(bool inverse);
 
         // Activate white-on-black mode (current text output)...
-        void PCD8544::setOutputInverse(bool is_output_inverted);
+        void PCD8544::setInverseOutput(bool inverse_output);
 
         // Set display contrast level (0-127)...
         void setContrast(uint8_t level);
@@ -105,7 +105,7 @@ class PCD8544: public Print {
         uint8_t line;
 
         // Current text output mode...
-        bool is_output_inverted = false;
+        bool inverse_output = false;
 
         // User-defined glyphs (below the ASCII space character)...
         const uint8_t *custom[' '];

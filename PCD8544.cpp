@@ -165,9 +165,9 @@ void PCD8544::setInverse(bool inverse)
 }
 
 
-void PCD8544::setOutputInverse(bool is_output_inverted)
+void PCD8544::setInverseOutput(bool inverse_output)
 {
-    this->is_output_inverted = is_output_inverted;
+    this->inverse_output = inverse_output;
 }
 
 
@@ -244,11 +244,11 @@ size_t PCD8544::write(uint8_t chr)
 
     // Output one column at a time...
     for (uint8_t i = 0; i < 5; i++) {
-        this->send(PCD8544_DATA, is_output_inverted ? ~glyph[i] : glyph[i]);
+        this->send(PCD8544_DATA, this->inverse_output ? ~glyph[i] : glyph[i]);
     }
 
     // One column between characters...
-    this->send(PCD8544_DATA, is_output_inverted ? 0xff : 0x00);
+    this->send(PCD8544_DATA, this->inverse_output ? 0xff : 0x00);
 
     // Update the cursor position...
     this->column = (this->column + 6) % this->width;
