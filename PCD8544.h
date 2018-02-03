@@ -63,7 +63,7 @@ class PCD8544: public Print {
         void setInverse(bool inverse);
 
         // Activate white-on-black mode (current text output)...
-        void PCD8544::setInverseOutput(bool inverse_output);
+        void setInverseOutput(bool inverse_output);
 
         // Set display contrast level (0-127)...
         void setContrast(uint8_t level);
