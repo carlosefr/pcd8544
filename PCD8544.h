@@ -59,11 +59,9 @@ class PCD8544: public Print {
         void display();
         void noDisplay();
 
-        // Activate white-on-black mode (whole display)...
-        void setInverse(bool inverse);
-
-        // Activate white-on-black mode (current text output)...
-        void setInverseOutput(bool inverse_output);
+        // Activate white-on-black mode...
+        void setInverse(bool enabled);        // ...whole display
+        void setInverseOutput(bool enabled);  // ...future writes
 
         // Set display contrast level (0-127)...
         void setContrast(uint8_t level);
@@ -104,7 +102,7 @@ class PCD8544: public Print {
         uint8_t column;
         uint8_t line;
 
-        // Current text output mode...
+        // Current output mode for writes (doesn't apply to draws)...
         bool inverse_output = false;
 
         // User-defined glyphs (below the ASCII space character)...

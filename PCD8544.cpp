@@ -159,15 +159,15 @@ inline void PCD8544::noDisplay()
 }
 
 
-void PCD8544::setInverse(bool inverse)
+void PCD8544::setInverse(bool enabled)
 {
-    this->send(PCD8544_CMD, inverse ? 0x0d : 0x0c);
+    this->send(PCD8544_CMD, enabled ? 0x0d : 0x0c);
 }
 
 
-void PCD8544::setInverseOutput(bool inverse_output)
+void PCD8544::setInverseOutput(bool enabled)
 {
-    this->inverse_output = inverse_output;
+    this->inverse_output = enabled;
 }
 
 
