@@ -11,10 +11,9 @@ env:
   - ARDUINO_VERSION=1.8.5
 
 before_install:
-  - curl -ssL -O http://downloads.arduino.cc/arduino-${ARDUINO_VERSION}-linux64.tar.xz
-  - tar Jxf arduino-${ARDUINO_VERSION}-linux64.tar.xz
-  - mv arduino-${ARDUINO_VERSION} /usr/local/share/arduino
-  - ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  - curl -sSL -O http://downloads.arduino.cc/arduino-${ARDUINO_VERSION}-linux64.tar.xz | tar Jxf -
+  - sudo mv arduino-${ARDUINO_VERSION} /usr/local/share/arduino
+  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/PCD8544
