@@ -11,7 +11,7 @@ env:
   - ARDUINO_VERSION=1.8.5
 
 before_install:
-  - curl -sSL -O http://downloads.arduino.cc/arduino-${ARDUINO_VERSION}-linux64.tar.xz | tar Jxf -
+  - curl -sSL http://downloads.arduino.cc/arduino-${ARDUINO_VERSION}-linux64.tar.xz | tar Jxvf -
   - sudo mv arduino-${ARDUINO_VERSION} /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 
