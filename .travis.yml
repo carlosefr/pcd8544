@@ -12,13 +12,13 @@ env:
 
 before_install:
   - curl -ssL -O http://downloads.arduino.cc/arduino-${ARDUINO_VERSION}-linux64.tar.xz
-  - tar xf arduino-${ARDUINO_VERSION}-linux64.tar.xz
-  - sudo mv arduino-${ARDUINO_VERSION} /usr/local/share/arduino
-  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  - tar Jxf arduino-${ARDUINO_VERSION}-linux64.tar.xz
+  - mv arduino-${ARDUINO_VERSION} /usr/local/share/arduino
+  - ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/PCD8544
 
 script:
-  - arduino --verify --board arduino:avr:uno $PWD/examples/HelloWorld/HelloWorld.ino
-  - arduino --verify --board arduino:avr:uno $PWD/examples/Thermometer/Thermometer.ino
+  - arduino --pref update.check=false --verify --board arduino:avr:uno $PWD/examples/HelloWorld/HelloWorld.ino
+  - arduino --pref update.check=false --verify --board arduino:avr:uno $PWD/examples/Thermometer/Thermometer.ino
