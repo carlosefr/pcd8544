@@ -3,6 +3,9 @@
  *
  * Copyright (c) 2010 Carlos Rodrigues <cefrodrigues@gmail.com>
  *
+ * Apr 24, 2020:    Breakout board variant details added by Mike Pfleger
+ *                  <mike.pfleger@gmail.com>
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -37,6 +40,27 @@
 
 class PCD8544: public Print {
     public:
+        /*
+         *  Please verify the particular variant of your Nokia LCD module before
+         *  applying power.
+         *
+         *  The PCD8544 "Nokia" LCD modules seem to come in two popular variants,
+         *  which we will refer to as "AdaFruit" and "Sparkfun", referring to the
+         *  popular online vendors. The pinout differences are detailed here for
+         *  reference:
+         *  
+         *  AdaFruit    Sparkfun    function   notes
+         *  -----------+-----------+----------+----------------------------------
+         *  1           2           GND
+         *  2           1           VCC
+         *  3           7           CLK / SCLK
+         *  4           6           DIN / MOSI
+         *  5           5           D/C
+         *  6           3           CS / SCE
+         *  7           4           RST
+         *  8           8           LED         no Ilim resistors on "Sparkfun"
+         */
+         
         // All the pins can be changed from the default values...
         PCD8544(uint8_t sclk  = 3,   /* clock       (display pin 2) */
                 uint8_t sdin  = 4,   /* data-in     (display pin 3) */
