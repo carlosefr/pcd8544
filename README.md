@@ -7,7 +7,7 @@ or compatibles. These displays are commonly found on older monochrome mobile pho
 [Nokia 3310](http://en.wikipedia.org/wiki/Nokia_3310) or [5110](http://en.wikipedia.org/wiki/Nokia_5110),
 so if you have one of these stuck in a drawer, take it out and start hacking away! :)
 
-This library is meant to have a minimal memory footprint. If you need graphics and other features and can spare the resources, check out the [library](https://github.com/adafruit/Adafruit-PCD8544-Nokia-5110-LCD-library) from Adafruit.
+This library is meant to have a minimal memory footprint, small enough to be usable in an [ATtiny85](https://www.microchip.com/wwwproducts/en/ATtiny85) with enough room left for your code. If you need graphics and other features and can spare the resources, check out the [library](https://github.com/adafruit/Adafruit-PCD8544-Nokia-5110-LCD-library) from Adafruit.
 
 ![PCD8544.png](https://raw.githubusercontent.com/carlosefr/pcd8544/gh-pages/PCD8544.jpg)
 
